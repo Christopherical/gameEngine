@@ -1,21 +1,17 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/GpuPreference.hpp>
+
+#include "Core/Engine.hpp"
+
+SFML_DEFINE_DISCRETE_GPU_PREFERENCE
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({200, 200}), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    Engine engine;
 
-    while (window.isOpen())
+    while (engine.IsRunning())
     {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+        engine.ProcessEvents();
+        engine.Update();
+        engine.Render();
     }
 }
