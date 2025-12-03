@@ -30,7 +30,10 @@ void Engine::ProcessEvents()
     }
 }
 
-void Engine::Update() {}
+void Engine::Update()
+{
+    context_.time.Update();
+}
 
 void Engine::Render()
 {
@@ -41,7 +44,7 @@ void Engine::Render()
 void Engine::EventWindowClose()
 {
     window_.close();
-    LOG_INFO("Window Closed");
+    LOG_INFO("Window closed");
 }
 
 void Engine::EventWindowResized(sf::Vector2u size)

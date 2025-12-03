@@ -4,5 +4,6 @@
         800,
         600
     ],
-    "disableSfmlLogs": true
+    "disableSfmlLogs": true,
+    "maximumDeltaTime": 0.03
 }
