@@ -3,7 +3,8 @@
 #include "Utils/Log.hpp"
 
 Engine::Engine() :
-    window_(sf::VideoMode(sf::Vector2u(gConfig.windowSize)), gConfig.windowTitle), context_(window_)
+    window_(sf::VideoMode(sf::Vector2u(gConfig.windowSize)), gConfig.windowTitle),
+    context_(window_)
 {
     window_.setIcon(sf::Image("Content/Textures/crystalball.png"));
     window_.setMinimumSize(window_.getSize() / 2u);
@@ -27,9 +28,15 @@ bool Engine::IsRunning() const
 
 void Engine::ProcessEvents()
 {
+    if (const auto nextScene = context_.scenes.FetchNextChange())
+    {
+        EventSceneChange(*nextScene);
+    }
+
     while (const std::optional<sf::Event> event = window_.pollEvent())
     {
         event->visit(EngineVisitor {*this});
+        context_.gui.ProcessEvent(*event);
     }
 }
 
@@ -45,6 +52,7 @@ void Engine::Render()
     context_.renderer.BeginDrawing();
     window_.draw(sf::Sprite(context_.renderer.FinishDrawing()));
 
+    context_.gui.Render();
     context_.cursor.Render();
 
     window_.display();
@@ -71,14 +79,29 @@ void Engine::EventWindowFocusGained()
     LOG_INFO("Window focus gained");
 }
 
-void Engine::EventWindowScreenshot() const {
+void Engine::EventWindowScreenshot() const
+{
     context_.screenshot.Take();
 }
 
-void Engine::EventGamepadConnected(int id) {
+void Engine::EventGamepadConnected(int id)
+{
     LOG_INFO("Gamepad {} connected", id);
 }
 
-void Engine::EventGamepadDisconnected(int id) {
+void Engine::EventGamepadDisconnected(int id)
+{
     LOG_INFO("Gamepad {} disconnected", id);
+}
+void Engine::EventSceneChange(const std::string& name)
+{
+    // TODO: Implement scene changing logic
+}
+void Engine::EventSceneRestart()
+{
+    context_.scenes.RestartCurrentScene();
+}
+void Engine::EventSceneMenuReturn()
+{
+    context_.scenes.ChangeScene("Menu");
 }
