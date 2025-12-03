@@ -2,12 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Core/EngineContext.hpp"
 #include "Core/EngineVisitor.hpp"
 
 class Engine
 {
 private:
     sf::RenderWindow window_;
+    EngineContent context_;
 
 public:
     Engine();
@@ -22,4 +24,7 @@ private:
     friend EngineVisitor;
 
     void EventWindowClose();
+    void EventWindowResized(sf::Vector2u size);
+    void EventWindowFocusLost();
+    void EventWindowFocusGained();
 };

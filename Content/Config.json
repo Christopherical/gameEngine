@@ -1,0 +1,8 @@
+{
+    "windowTitle": "Game Engine",
+    "windowSize": [
+        800,
+        600
+    ],
+    "disableSfmlLogs": true
+}
