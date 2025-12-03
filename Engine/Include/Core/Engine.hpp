@@ -9,7 +9,7 @@ class Engine
 {
 private:
     sf::RenderWindow window_;
-    EngineContent context_;
+    EngineContext context_;
 
 public:
     Engine();
@@ -27,4 +27,7 @@ private:
     void EventWindowResized(sf::Vector2u size);
     void EventWindowFocusLost();
     void EventWindowFocusGained();
+    void EventWindowScreenshot() const;
+    void EventGamepadConnected(int id);
+    void EventGamepadDisconnected(int id);
 };
