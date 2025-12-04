@@ -19,10 +19,10 @@ Engine::Engine() :
     {
         sf::err().rdbuf(nullptr);
     }
+    LOG_INFO("Window Created");
 
     context_.audio.SetGlobalVolume(gConfig.globalVolume);
-
-    LOG_INFO("Window Created");
+    context_.scenes.ChangeScene("Bounce");
 }
 
 bool Engine::IsRunning() const
@@ -44,7 +44,7 @@ void Engine::ProcessEvents()
 
         if (!overlay_.IsVisible())
         {
-            // currentScene_->OnEvent(*event);
+            currentScene_->OnEvent(*event);
         }
     }
 
@@ -60,7 +60,7 @@ void Engine::Update()
     context_.cursor.Update(context_.time.GetDeltaTime());
     if (!overlay_.IsVisible())
     {
-        // currentScene_->Update();
+        currentScene_->Update();
     }
 }
 
@@ -68,7 +68,7 @@ void Engine::Render()
 {
     window_.clear();
     context_.renderer.BeginDrawing();
-    // currentScene_->Render();
+    currentScene_->Render();
     window_.draw(sf::Sprite(context_.renderer.FinishDrawing()));
 
     context_.gui.Render();
@@ -125,8 +125,8 @@ void Engine::EventSceneChange(const std::string& name)
     }
     context_.input.Clear();
 
-    // currentScene_ = newScene;
-    // currentScene_->Start();
+    currentScene_ = newScene;
+    currentScene_->Start();
 }
 void Engine::EventSceneRestart()
 {
@@ -150,7 +150,7 @@ void Engine::EventOverlayPauseToggle()
     context_.cursor.SetVisible(overlayVisible || cursorWasVisible_);
     cursorWasVisible_ = cursorVisible;
 
-    // currentScene_->OnPause(overlayVisible);
+    currentScene_->OnPause(overlayVisible);
     LOG_INFO(overlayVisible ? "paused the game" : "resumed the game");
 }
 

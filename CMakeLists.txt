@@ -14,10 +14,10 @@ FetchContent_Declare(tgui URL https://github.com/texus/TGUI/archive/refs/tags/v1
 FetchContent_Declare(enum URL https://github.com/Neargye/magic_enum/archive/refs/tags/v0.9.7.tar.gz)
 FetchContent_MakeAvailable(sfml json logs tgui enum)
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS Engine/Source/*.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS Engine/Source/*.cpp Games/Source/*.cpp)
 add_executable(gameEngine ${SOURCES})
 
-target_include_directories(gameEngine PRIVATE Engine/Include)
+target_include_directories(gameEngine PRIVATE Engine/Include Games/Include)
 target_compile_features(gameEngine PRIVATE cxx_std_20)
 target_compile_options(gameEngine PRIVATE $<IF:$<CXX_COMPILER_ID:MSVC>, /W4, -Wall -Wextra>)
 

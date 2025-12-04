@@ -1,14 +1,14 @@
 #include "Scene/SceneFactory.hpp"
 
+#include "Bounce.hpp"
+
 namespace SceneFactory
 {
     Scenes CreateScenes(EngineContext& context)
     {
         Scenes scenes;
 
-        // Example of adding scenes:
-        // scenes["MainMenu"] = std::make_unique<MainMenuScene>(context);
-        // scenes["GameLevel"] = std::make_unique<GameLevelScene>(context);
+        scenes.emplace("Bounce", std::make_unique<Bounce::Game>(context));
 
         return scenes;
     }
