@@ -4,12 +4,16 @@
 
 #include "Core/EngineContext.hpp"
 #include "Core/EngineVisitor.hpp"
+#include "Scene/SceneFactory.hpp"
 
 class Engine
 {
 private:
     sf::RenderWindow window_;
     EngineContext context_;
+
+    SceneFactory::Scenes scenes_;
+    Scene* currentScene_;
 
 public:
     Engine();

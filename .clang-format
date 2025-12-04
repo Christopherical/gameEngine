@@ -9,6 +9,7 @@ PointerAlignment: Left
 ReferenceAlignment: Left
 DerivePointerAlignment: false
 AccessModifierOffset: -4
+IndentPPDirectives: BeforeHash
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortBlocksOnASingleLine: Always
 AllowShortIfStatementsOnASingleLine: Never
@@ -35,10 +36,12 @@ BreakConstructorInitializers: AfterColon
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 FixNamespaceComments: true
+NamespaceIndentation: All
 IncludeBlocks: Preserve
 MaxEmptyLinesToKeep: 2
 NamespaceMacros: []
-PackConstructorInitializers: Never
+PackConstructorInitializers: CurrentLine
+AllowAllConstructorInitializersOnNextLine: true
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1
 PenaltyBreakComment: 300
