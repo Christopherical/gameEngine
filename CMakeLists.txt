@@ -11,7 +11,8 @@ FetchContent_Declare(sfml URL https://github.com/SFML/SFML/archive/refs/tags/3.0
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
 FetchContent_Declare(logs URL https://github.com/gabime/spdlog/archive/refs/tags/v1.16.0.tar.gz)
 FetchContent_Declare(tgui URL https://github.com/texus/TGUI/archive/refs/tags/v1.11.0.tar.gz)
-FetchContent_MakeAvailable(sfml json logs tgui)
+FetchContent_Declare(enum URL https://github.com/Neargye/magic_enum/archive/refs/tags/v0.9.7.tar.gz)
+FetchContent_MakeAvailable(sfml json logs tgui enum)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS Engine/Source/*.cpp)
 add_executable(gameEngine ${SOURCES})
@@ -20,4 +21,4 @@ target_include_directories(gameEngine PRIVATE Engine/Include)
 target_compile_features(gameEngine PRIVATE cxx_std_20)
 target_compile_options(gameEngine PRIVATE $<IF:$<CXX_COMPILER_ID:MSVC>, /W4, -Wall -Wextra>)
 
-target_link_libraries(gameEngine PRIVATE SFML::Graphics SFML::Audio nlohmann_json::nlohmann_json spdlog::spdlog TGUI::TGUI)
+target_link_libraries(gameEngine PRIVATE SFML::Graphics SFML::Audio nlohmann_json::nlohmann_json spdlog::spdlog TGUI::TGUI magic_enum::magic_enum)
