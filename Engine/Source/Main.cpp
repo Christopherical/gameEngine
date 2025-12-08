@@ -7,19 +7,19 @@ SFML_DEFINE_DISCRETE_GPU_PREFERENCE
 
 int main()
 {
-    Engine engine;
+    Engine engine; // Initializes everything.
 
     while (engine.IsRunning())
     {
-        engine.ProcessEvents();
+        engine.ProcessEvents(); // Handles events like input, window, etc.
 
-        if (!engine.HasFocus())
+        if (!engine.HasFocus()) // Pause when the window is not focused.
         {
             sf::sleep(sf::milliseconds(10));
             continue;
         }
 
-        engine.Update();
-        engine.Render();
+        engine.Update(); // Updates game logic.
+        engine.Render(); // Renders the current frame.
     }
 }

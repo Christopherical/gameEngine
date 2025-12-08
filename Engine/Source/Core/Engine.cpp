@@ -2,6 +2,11 @@
 #include "Core/EngineConfig.hpp"
 #include "Utils/Log.hpp"
 
+// Takes the SFML Window (instatiated vis gConfig) and passes it to the EngineContext.
+// context_ is a struct (EngineContext) that aggregates all the engine managers.
+// scenes_ is populated by the SceneFactory which creates all scenes/Games and returns them in a map
+// currentScene_ is initialized to nullptr and set when the first scene change event is processed.??
+// overlay_ is initialized with the GuiManager from the context.
 Engine::Engine() :
     window_(sf::VideoMode(sf::Vector2u(gConfig.windowSize)), gConfig.windowTitle),
     context_(window_),
@@ -22,7 +27,7 @@ Engine::Engine() :
     LOG_INFO("Window Created");
 
     context_.audio.SetGlobalVolume(gConfig.globalVolume);
-    context_.scenes.ChangeScene("Bounce");
+    context_.scenes.ChangeScene("Clicker");
 }
 
 bool Engine::IsRunning() const
@@ -35,6 +40,7 @@ bool Engine::HasFocus() const
     return window_.hasFocus();
 }
 
+// 1 - First function called in the main loop.
 void Engine::ProcessEvents()
 {
     if (const auto nextScene = context_.scenes.FetchNextChange())
@@ -59,6 +65,7 @@ void Engine::ProcessEvents()
     }
 }
 
+// 2 - Second function called in the main loop.
 void Engine::Update()
 {
     context_.time.Update();
@@ -69,6 +76,7 @@ void Engine::Update()
     }
 }
 
+// 3 - Third function called in the main loop.
 void Engine::Render()
 {
     window_.clear();
@@ -169,9 +177,9 @@ void Engine::EventOverlaySelect(OverlaySelection selection)
     case OverlaySelection::Restart:
         EventSceneRestart();
         break;
-    case OverlaySelection::Menu:
-        EventSceneMenuReturn();
-        break;
+    // case OverlaySelection::Menu:
+    //     EventSceneMenuReturn();
+    //     break;
     case OverlaySelection::Quit:
         EventWindowClose();
         break;

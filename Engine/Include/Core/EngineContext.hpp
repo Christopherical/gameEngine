@@ -15,6 +15,7 @@
 #include "Managers/ScreenshotManager.hpp"
 #include "Managers/TimeManager.hpp"
 
+// Aggregate Pattern for engine managers.
 struct EngineContext {
     RandomManager random;
     TimeManager time;
@@ -29,9 +30,5 @@ struct EngineContext {
     GuiManager gui;
     SceneManager scenes;
 
-    EngineContext(sf::RenderWindow& window) :
-        screenshot(window),
-        cursor(window),
-        gui(window)
-    {}
+    EngineContext(sf::RenderWindow& window) : screenshot(window), cursor(window), gui(window) {}
 };

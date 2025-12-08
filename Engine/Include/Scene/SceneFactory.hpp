@@ -9,7 +9,5 @@
 
 namespace SceneFactory
 {
-    using Scenes = std::unordered_map<std::string, std::unique_ptr<Scene>>;
-
-    Scenes CreateScenes(EngineContext& context);
+    std::unordered_map<std::string, std::unique_ptr<Scene>> CreateScenes(EngineContext& context);
 } // namespace SceneFactory

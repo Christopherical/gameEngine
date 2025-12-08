@@ -18,6 +18,7 @@ private:
     tgui::Group::Ptr group_;
 
 public:
+    // Constructor Injection (of the main forms of dependency injection)
     Overlay(GuiManager& gui);
     std::optional<OverlaySelection> FetchSelection();
 

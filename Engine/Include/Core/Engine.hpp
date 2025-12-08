@@ -13,7 +13,7 @@ private:
     sf::RenderWindow window_;
     EngineContext context_;
 
-    SceneFactory::Scenes scenes_;
+    std::unordered_map<std::string, std::unique_ptr<Scene>> scenes_;
     Scene* currentScene_;
 
     Overlay overlay_;

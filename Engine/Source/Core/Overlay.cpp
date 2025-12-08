@@ -11,6 +11,7 @@ Overlay::Overlay(GuiManager& gui)
     InitBackground();
     InitButtons();
 
+    // Constructor Injection (of the main forms of dependency injection)
     gui.Add(group_);
 }
 
