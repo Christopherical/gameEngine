@@ -2,6 +2,7 @@
 
 #include "Bounce.hpp"
 #include "Clicker.hpp"
+#include "MemoryCard.hpp"
 
 namespace SceneFactory
 {
@@ -11,6 +12,8 @@ namespace SceneFactory
 
         scenes.emplace("Bounce", std::make_unique<Bounce::Game>(context));
         scenes.emplace("Clicker", std::make_unique<Clicker::Game>(context));
+        scenes.emplace("MemoryCard", std::make_unique<MemoryCard::Game>(context));
+        
         return scenes;
     }
 } // namespace SceneFactory

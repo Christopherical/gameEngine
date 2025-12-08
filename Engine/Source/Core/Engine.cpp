@@ -27,7 +27,7 @@ Engine::Engine() :
     LOG_INFO("Window Created");
 
     context_.audio.SetGlobalVolume(gConfig.globalVolume);
-    context_.scenes.ChangeScene("Clicker");
+    context_.scenes.ChangeScene("MemoryCard");
 }
 
 bool Engine::IsRunning() const

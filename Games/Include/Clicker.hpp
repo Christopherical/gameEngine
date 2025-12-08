@@ -7,8 +7,8 @@ namespace Clicker
     class Game : public Scene
     {
     private:
-        Target target;
-        Stats stats;
+        Target target_;
+        Stats stats_;
 
     public:
         Game(EngineContext& context);

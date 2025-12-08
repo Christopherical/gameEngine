@@ -11,28 +11,28 @@ Game::Game(EngineContext& context) : Scene(context)
 
 void Game::InitTarget()
 {
-    target.shape.setTexture(ctx.resources.FetchTexture(TARGET_TEXTURE_FILENAME));
-    target.shape.setRadius(TARGET_RADIUS);
-    target.shape.setOrigin(target.shape.getGeometricCenter());
+    target_.shape.setTexture(ctx.resources.FetchTexture(TARGET_TEXTURE_FILENAME));
+    target_.shape.setRadius(TARGET_RADIUS);
+    target_.shape.setOrigin(target_.shape.getGeometricCenter());
 
-    target.teleportCooldown.SetDuration(TARGET_TELEPORT_COOLDOWN_DURATION);
+    target_.teleportCooldown.SetDuration(TARGET_TELEPORT_COOLDOWN_DURATION);
 }
 
 void Game::InitStats()
 {
-    stats.scoreText.setFillColor(STATS_SCORE_TEXT_COLOR);
-    stats.scoreText.setCharacterSize(STATS_TEXT_SIZE);
-    stats.scoreText.setPosition({5, 5});
+    stats_.scoreText.setFillColor(STATS_SCORE_TEXT_COLOR);
+    stats_.scoreText.setCharacterSize(STATS_TEXT_SIZE);
+    stats_.scoreText.setPosition({5, 5});
 
-    stats.finalCooldown.SetDuration(STATS_FINAL_COOLDOWN_DURATION);
+    stats_.finalCooldown.SetDuration(STATS_FINAL_COOLDOWN_DURATION);
 
-    stats.finalCooldownText.setFillColor(STATS_FINAL_COOLDOWN_TEXT_COLOR);
-    stats.finalCooldownText.setCharacterSize(STATS_TEXT_SIZE);
-    stats.finalCooldownText.setPosition({5, 50});
+    stats_.finalCooldownText.setFillColor(STATS_FINAL_COOLDOWN_TEXT_COLOR);
+    stats_.finalCooldownText.setCharacterSize(STATS_TEXT_SIZE);
+    stats_.finalCooldownText.setPosition({5, 50});
 
-    stats.bestTimeText.setFillColor(STATS_BEST_TIME_TEXT_COLOR);
-    stats.bestTimeText.setCharacterSize(STATS_TEXT_SIZE);
-    stats.bestTimeText.setPosition({5, 95});
+    stats_.bestTimeText.setFillColor(STATS_BEST_TIME_TEXT_COLOR);
+    stats_.bestTimeText.setCharacterSize(STATS_TEXT_SIZE);
+    stats_.bestTimeText.setPosition({5, 95});
 }
 
 void Game::Start()
@@ -53,23 +53,23 @@ void Game::BindInputs()
 
 void Game::StartTarget()
 {
-    target.shape.setFillColor(TARGET_COLOR);
-    target.shape.setPosition(gConfig.windowSize / 2.f);
+    target_.shape.setFillColor(TARGET_COLOR);
+    target_.shape.setPosition(gConfig.windowSize / 2.f);
 }
 
 void Game::StartStats()
 {
-    stats.score = 0;
-    stats.scoreText.setString("Score: 0/" + std::to_string(STATS_SCORE_GOAL));
+    stats_.score = 0;
+    stats_.scoreText.setString("Score: 0/" + std::to_string(STATS_SCORE_GOAL));
 
-    stats.finalCooldown.Reset();
+    stats_.finalCooldown.Reset();
 
-    float totalTime = stats.finalCooldown.GetDuration();
-    stats.finalCooldownText.setString("Time Left (s): " +
+    float totalTime = stats_.finalCooldown.GetDuration();
+    stats_.finalCooldownText.setString("Time Left (s): " +
                                       std::to_string(static_cast<int>(totalTime)));
 
-    stats.bestTime = ctx.save.Get<float>(STATS_BEST_TIME_KEY, totalTime);
-    stats.bestTimeText.setString(std::format("Best Time: {:.2f}", stats.bestTime));
+    stats_.bestTime = ctx.save.Get<float>(STATS_BEST_TIME_KEY, totalTime);
+    stats_.bestTimeText.setString(std::format("Best Time: {:.2f}", stats_.bestTime));
 }
 
 void Game::Update()
@@ -79,7 +79,7 @@ void Game::Update()
         EventTargetClicked();
     }
 
-    if (stats.finalCooldown.IsRunning())
+    if (stats_.finalCooldown.IsRunning())
     {
         UpdateTarget();
         UpdateStats();
@@ -88,22 +88,22 @@ void Game::Update()
 
 void Clicker::Game::UpdateStats()
 {
-    float timeLeft = stats.finalCooldown.GetDuration() - stats.finalCooldown.GetElapsedTime();
-    stats.finalCooldownText.setString(std::format("Time Left (s): {:.1f}", timeLeft));
+    float timeLeft = stats_.finalCooldown.GetDuration() - stats_.finalCooldown.GetElapsedTime();
+    stats_.finalCooldownText.setString(std::format("Time Left (s): {:.1f}", timeLeft));
 
-    if (stats.finalCooldown.IsOver())
+    if (stats_.finalCooldown.IsOver())
     {
-        LOG_INFO("Time's up! Score: {}", stats.score);
+        LOG_INFO("Time's up! Score: {}", stats_.score);
         ctx.scenes.RestartCurrentScene();
     }
 }
 
 void Game::UpdateTarget()
 {
-    if (target.teleportCooldown.IsOver())
+    if (target_.teleportCooldown.IsOver())
     {
         EventTargetTeleport();
-        target.teleportCooldown.Restart();
+        target_.teleportCooldown.Restart();
     }
 
     UpdateTargetColor();
@@ -112,36 +112,36 @@ void Game::UpdateTarget()
 void Game::UpdateTargetColor()
 {
     float progress =
-        target.teleportCooldown.GetElapsedTime() / target.teleportCooldown.GetDuration();
+        target_.teleportCooldown.GetElapsedTime() / target_.teleportCooldown.GetDuration();
 
-    sf::Color color = target.shape.getFillColor();
+    sf::Color color = target_.shape.getFillColor();
     color.a = std::uint8_t(255 * (1 - std::min(progress, 1.f)));
 
-    target.shape.setFillColor(color);
+    target_.shape.setFillColor(color);
 }
 void Clicker::Game::EventTargetClicked()
 {
     EventTargetTeleport();
-    target.teleportCooldown.Restart();
-    if (stats.score == 0)
+    target_.teleportCooldown.Restart();
+    if (stats_.score == 0)
     {
-        stats.finalCooldown.Start();
+        stats_.finalCooldown.Start();
     }
     EventStatsScoreIncrease();
 }
 void Clicker::Game::EventTargetTeleport()
 {
-    sf::Vector2f halfSize = target.shape.getGlobalBounds().size / 2.f;
-    target.shape.setPosition(ctx.random.Position(halfSize, gConfig.windowSize - halfSize));
+    sf::Vector2f halfSize = target_.shape.getGlobalBounds().size / 2.f;
+    target_.shape.setPosition(ctx.random.Position(halfSize, gConfig.windowSize - halfSize));
 }
 void Clicker::Game::EventStatsScoreIncrease()
 {
-    stats.score++;
-    stats.scoreText.setString(std::format("Score: {}/{}", stats.score, STATS_SCORE_GOAL));
-    if (stats.score == STATS_SCORE_GOAL)
+    stats_.score++;
+    stats_.scoreText.setString(std::format("Score: {}/{}", stats_.score, STATS_SCORE_GOAL));
+    if (stats_.score == STATS_SCORE_GOAL)
     {
-        float elapsedTime = stats.finalCooldown.GetElapsedTime();
-        ctx.save.Set(STATS_BEST_TIME_KEY, std::min(elapsedTime, stats.bestTime));
+        float elapsedTime = stats_.finalCooldown.GetElapsedTime();
+        ctx.save.Set(STATS_BEST_TIME_KEY, std::min(elapsedTime, stats_.bestTime));
         LOG_INFO("You win! Time: {} seconds", elapsedTime);
 
         ctx.scenes.RestartCurrentScene();
@@ -150,28 +150,28 @@ void Clicker::Game::EventStatsScoreIncrease()
 
 bool Game::IsTargetHovered() const
 {
-    return Contains(target.shape, ctx.cursor.GetPosition());
+    return Contains(target_.shape, ctx.cursor.GetPosition());
 }
 
 void Game::Render() const
 {
-    ctx.renderer.Draw(target.shape);
+    ctx.renderer.Draw(target_.shape);
 
-    ctx.renderer.Draw(stats.scoreText);
-    ctx.renderer.Draw(stats.finalCooldownText);
-    ctx.renderer.Draw(stats.bestTimeText);
+    ctx.renderer.Draw(stats_.scoreText);
+    ctx.renderer.Draw(stats_.finalCooldownText);
+    ctx.renderer.Draw(stats_.bestTimeText);
 }
 
 void Game::OnPause(bool paused)
 {
     if (paused)
     {
-        target.teleportCooldown.Stop();
-        stats.finalCooldown.Stop();
+        target_.teleportCooldown.Stop();
+        stats_.finalCooldown.Stop();
     }
     else
     {
-        target.teleportCooldown.Start();
-        stats.finalCooldown.Start();
+        target_.teleportCooldown.Start();
+        stats_.finalCooldown.Start();
     }
 }
